@@ -34,7 +34,7 @@ function MovieListEach(props: Props) {
               />
             </Button>
           </div>
-          <div className="grid grid-cols-2 gap-4 p-[26px]">
+          <div className="grid grid-cols-2  gap-4 p-[26px]">
             {props.movieList.map((movie: Movie, index) => (
               <div
                 className="w-full flex flex-col gap-2 items-center p-[10px] bg-slate-200 rounded-md"
@@ -73,7 +73,7 @@ function MovieListEach(props: Props) {
       {!isMobile && (
         <div>
           {" "}
-          <div className="flex  px-[30px] justify-between">
+          <div className="flex   px-[30px] justify-between">
             <div>
               <h1 className="text-[24px] font-bold">{props.title}</h1>
             </div>
@@ -87,7 +87,7 @@ function MovieListEach(props: Props) {
               />
             </Button>
           </div>
-          <div className="grid grid-cols-2 gap-4 p-[26px]">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5  gap-4 p-[26px]">
             {props.movieList.map((movie: Movie, index) => (
               <div
                 className="w-full flex flex-col gap-2 items-center p-[10px] bg-slate-200 rounded-md"
