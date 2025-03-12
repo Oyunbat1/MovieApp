@@ -2,16 +2,15 @@
 
 import axios from "axios";
 import ACCESS_TOKEN from "@/constants/index";
-import Movie from "@/components/type/Type";
 import { useEffect, useState } from "react";
 import Header from "@/components/ui/Header";
 import Scroll from "@/components/ui/Scroll";
 import MovieList from "@/components/ui/MovieList";
-import { CONFIG_FILES } from "next/dist/shared/lib/constants";
+import Footer from "@/components/ui/Footer";
 
 type Props = {
-  props : object
-} // 
+  props: object;
+}; //
 
 export default function Home() {
   const [movieList, setMovieList] = useState([]);
@@ -34,10 +33,10 @@ export default function Home() {
     <>
       <Header></Header>
       <div className="flex overflow-x-auto">
-      <Scroll></Scroll>
+        <Scroll></Scroll>
       </div>
-
       <MovieList movieList={movieList}></MovieList>
+      <Footer></Footer>
     </>
   );
 }

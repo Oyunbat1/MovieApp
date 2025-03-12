@@ -4,6 +4,7 @@ import { useState } from 'react';
 import React from 'react';
 
 type Movie = {
+
     adult: boolean;
     backdrop_path: string;
     genre_ids: number[];
@@ -19,6 +20,7 @@ type Movie = {
     vote_average: number;
     vote_count: number;
     movieList: object
+    detail: object
   };
 
   export default Movie
