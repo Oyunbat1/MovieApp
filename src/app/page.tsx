@@ -2,28 +2,19 @@
 
 import axios from "axios";
 import ACCESS_TOKEN from "@/constants/index";
+import Movie from "@/components/type/Type";
 import { useEffect, useState } from "react";
+import Header from "@/components/ui/Header";
+import Scroll from "@/components/ui/Scroll";
+import MovieList from "@/components/ui/MovieList";
+import { CONFIG_FILES } from "next/dist/shared/lib/constants";
 
-type Movie = {
-  adult: boolean;
-  backdrop_path: string;
-  genre_ids: number[];
-  id: number;
-  original_language: string;
-  original_title: string;
-  overview: string;
-  popularity: number;
-  poster_path: string;
-  release_date: string;
-  title: string;
-  video: boolean;
-  vote_average: number;
-  vote_count: number;
-};
+type Props = {
+  props : object
+} // 
 
 export default function Home() {
   const [movieList, setMovieList] = useState([]);
-
 
   const getMovies = async () => {
     const movies = await axios.get(
@@ -41,11 +32,12 @@ export default function Home() {
   }, []);
   return (
     <>
-      {movieList.map((movie:Movie, index) => (
-        <div>{movie.title}
-         <img src={`https://image.tmdb.org/t/p/w300${movie.poster_path}`}></img></div>
-       
-      ))}
+      <Header></Header>
+      <div className="flex overflow-x-auto">
+      <Scroll></Scroll>
+      </div>
+
+      <MovieList movieList={movieList}></MovieList>
     </>
   );
 }
