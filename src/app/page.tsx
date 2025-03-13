@@ -32,9 +32,7 @@ export default function Home() {
   return (
     <>
       <Header></Header>
-      <div className="flex overflow-x-auto">
-        <Scroll></Scroll>
-      </div>
+      <Scroll></Scroll>
       <MovieList movieList={movieList}></MovieList>
       <Footer></Footer>
     </>

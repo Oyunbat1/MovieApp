@@ -3,6 +3,16 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { useMediaQuery } from "react-responsive";
 import { useState, useEffect } from "react";
+import Autoplay from "embla-carousel-autoplay"
+
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel"
+
 function Scroll() {
   const isMobileQuery = useMediaQuery({ maxWidth: 639 });
   const [isMobile, setIsMobile] = useState(false);
@@ -10,10 +20,23 @@ function Scroll() {
     setIsMobile(isMobileQuery);
   }, [isMobileQuery]);
 
+
+  const plugin = React.useRef(
+    Autoplay({ delay: 2000, stopOnInteraction: true })
+  )
+ 
   return (
-    <div>
+    <div className="flex justify-center w-screen ">
       {isMobile && (
-        <div>
+        <div className="mb-[20px] mt-[10px]">
+          <div>
+          <Carousel className="w-screen"
+             plugins={[plugin.current]}
+          >
+      <CarouselContent >
+        {Array.from({ length: 5 }).map((_, index) => (
+          <CarouselItem key={index}>
+                    <div>
           <Image
             src="/scroll.jpeg"
             width={1920}
@@ -63,9 +86,25 @@ function Scroll() {
             </Button>
           </div>
         </div>
+          </CarouselItem>
+        ))}
+      </CarouselContent>
+      {/* <CarouselPrevious />
+      <CarouselNext /> */}
+    </Carousel>
+          </div>
+
+
+        </div>
       )}
       {!isMobile && (
-        <div className="relative  text-white mb-[30px]">
+<div>
+<div>
+<Carousel className="w-screen"  plugins={[plugin.current]}>
+      <CarouselContent>
+        {Array.from({ length: 5 }).map((_, index) => (
+          <CarouselItem key={index}>
+          <div className="relative  text-white mb-[30px]">
           <Image
             src="/desktop/Feature.png"
             width={1920}
@@ -119,6 +158,14 @@ function Scroll() {
             </Button>
           </div>
         </div>
+          </CarouselItem>
+        ))}
+      </CarouselContent>
+    
+    </Carousel>
+</div>
+
+</div>
       )}
     </div>
   );
