@@ -32,7 +32,7 @@ function MovieListEach({ movieList, title }: Props) {
    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 p-[26px]">
      {movieList.map((movie: Movie, index) => (
        <div className="w-full flex flex-col gap-2 items-center p-[10px] bg-slate-200 rounded-md" key={index}>
-         <div className="rounded-md bg-red-400 p-[10px]">
+         <div className="rounded-md p-[10px]">
            <img src={`https://image.tmdb.org/t/p/w300${movie.poster_path}`} alt={movie.title} />
          </div>
          <div className="flex flex-col justify-center items-center">
@@ -72,7 +72,7 @@ function MovieListEach({ movieList, title }: Props) {
                 className="w-full flex flex-col gap-2 items-center p-[10px] bg-slate-200 rounded-md"
                 key={index}
               >
-                <div className="rounded-md bg-red-400 p-[10px]">
+                <div className="rounded-md p-[10px]">
                   <img
                     src={`https://image.tmdb.org/t/p/w300${movie.poster_path}`}
                   ></img>

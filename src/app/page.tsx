@@ -3,7 +3,7 @@
 import axios from "axios";
 import ACCESS_TOKEN from "@/constants/index";
 import { useEffect, useState } from "react";
-import Header from "@/components/ui/Header";
+import Header from "@/components/ui/Header/Header";
 import Scroll from "@/components/ui/Scroll";
 import MovieList from "@/components/ui/MovieList";
 import Footer from "@/components/ui/Footer";
