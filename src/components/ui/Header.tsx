@@ -7,7 +7,7 @@ function Header() {
         <Image src="/Logo.png" width={100} height={50} alt='Movie Logo'/>
       </div>
       <div className='flex gap-4'>
-        <div >btn1</div>
+        <div>btn1</div>
         <div>btn2</div>
       </div>
     </div>
