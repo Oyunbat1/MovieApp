@@ -1,8 +1,7 @@
 "use client";
 import React from "react";
 import Image from "next/image";
-import First from "./firstStep/First";
-import Second from "./secondStep/Second";
+
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useMediaQuery } from "react-responsive";
@@ -20,7 +19,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 type Checked = DropdownMenuCheckboxItemProps["checked"];
 
-function Header() {
+function Header({ setCurrentPage }) {
   const [search, setSearch] = useState(null);
   const [showStatusBar, setShowStatusBar] = React.useState<Checked>(true);
   const [showActivityBar, setShowActivityBar] = React.useState<Checked>(false);
@@ -30,10 +29,6 @@ function Header() {
   useEffect(() => {
     setIsMobile(isMobileQuery);
   }, [isMobileQuery]);
-
-  // const directSearch = () => {
-  //   setSearch("directSearch");
-  // };
 
   return (
     <div>
@@ -50,7 +45,7 @@ function Header() {
               />
               <div className="flex gap-4 mt-[10px]">
                 <Button
-                  // onClick={directSearch}
+                  onClick={() => setCurrentPage("first")}
                   className="w-[35px] text-[10px] bg-white text-black hover:text-white "
                 >
                   <Search />
