@@ -23,7 +23,7 @@ console.log("Movie ID:", id);
             headers: { Authorization: `Bearer ${ACCESS_TOKEN}` },
           }
         );
-        // setMovie(response.data);
+        setMovie(response.data);
       } catch (error) {
         console.error("Error fetching movie details:", error);
       }
