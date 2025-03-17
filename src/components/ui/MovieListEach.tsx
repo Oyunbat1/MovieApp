@@ -4,6 +4,7 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { useMediaQuery } from "react-responsive";
 import { useState, useEffect } from "react";
+import Link from "next/link";
 
 
 type Props = {
@@ -28,9 +29,10 @@ function MovieListEach({ movieList, title }: Props) {
        <Image src="/arrow-right.svg" width={20} height={50} alt="Movie Logo" />
      </Button>
    </div>
-
+       
    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 p-[26px]">
      {movieList.map((movie: Movie, index) => (
+        
        <div className="w-full flex flex-col gap-2 items-center p-[10px] bg-slate-200 rounded-md" key={index}>
          <div className="rounded-md p-[10px]">
            <img src={`https://image.tmdb.org/t/p/w300${movie.poster_path}`} alt={movie.title} />

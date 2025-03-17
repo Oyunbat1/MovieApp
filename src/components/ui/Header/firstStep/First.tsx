@@ -32,7 +32,7 @@ function First({ setCurrentPage, genreMovies }) {
   return (
     <div>
       {isMobile && (
-        <div className="h-[60px] bg-white flex justify-center w-full items-center gap-2 pt-[10px]">
+        <div className="h-[60px] bg-white flex justify-center w-full items-center gap-1 pt-[10px]">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="outline" className="w-[37px]">
@@ -63,7 +63,7 @@ function First({ setCurrentPage, genreMovies }) {
             </DropdownMenuContent>
           </DropdownMenu>
           <div
-            className="flex bg-white w-[380px] md:w-[419px]  px-4 rounded-md
+            className="flex bg-white w-[320px] md:w-[419px]  px-4 rounded-md
              items-center border  border-solid shadow-[0px_1px_2px_0px_rgba(0,0,0,0.05)]"
           >
             <Search className="text-[#E4E4E7]" />

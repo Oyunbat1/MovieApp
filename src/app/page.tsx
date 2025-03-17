@@ -8,6 +8,7 @@ import Scroll from "@/components/ui/Scroll";
 import MovieList from "@/components/ui/MovieList";
 import Footer from "@/components/ui/Footer";
 import First from "@/components/ui/Header/firstStep/First";
+import MovieDetailPage from "@/app/movie/[id]/page"
 
 export default function Home() {
   const [upcomingMovies, setUpcomingMovies] = useState([]);
@@ -61,6 +62,7 @@ export default function Home() {
         popularMovies={popularMovies}
       />
       <Footer />
+      <MovieDetailPage></MovieDetailPage>
     </>
   );
 }

@@ -5,7 +5,7 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useMediaQuery } from "react-responsive";
-import { Search, Moon, ChevronDown } from "lucide-react";
+import { Search, Moon, ChevronDown,ChevronRight} from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { DropdownMenuCheckboxItemProps } from "@radix-ui/react-dropdown-menu";
 
@@ -19,7 +19,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 type Checked = DropdownMenuCheckboxItemProps["checked"];
 
-function Header({ setCurrentPage }) {
+function Header({ setCurrentPage ,genreMovies }) {
   const [search, setSearch] = useState(null);
   const [showStatusBar, setShowStatusBar] = React.useState<Checked>(true);
   const [showActivityBar, setShowActivityBar] = React.useState<Checked>(false);
@@ -71,28 +71,29 @@ function Header({ setCurrentPage }) {
                       Genre
                     </Button>
                   </DropdownMenuTrigger>
-                  <DropdownMenuContent className="w-56">
-                    <DropdownMenuLabel>Appearance</DropdownMenuLabel>
+                  <DropdownMenuContent className="w-[500px] xl:ml-[405px] lg:ml-[400px]">
+                  <DropdownMenuLabel className="text-[24px] font-[600]">
+                Genres
+                <p className="text-[16px] font-[400]">
+                  See lists of movies by genre
+                </p>
+              </DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <div className="grid grid-cols-3 xl:grid-cols-5 xl:gap-y-8 gap-3 p-[8px] ">
+                {" "}
+                {genreMovies.map((genres) => (
+                  <div className="" key={genres.id}>
+                    <Button
+                      key={genres.id}
+                      className="bg-white border h-[24px] text-black text-[12px] hover:text-white "
+                    >
+                      {genres.name} <ChevronRight className="text-black" />
+                    </Button>
+                  </div>
+                ))}
+              </div>
                     <DropdownMenuSeparator />
-                    <DropdownMenuCheckboxItem
-                      checked={showStatusBar}
-                      onCheckedChange={setShowStatusBar}
-                    >
-                      Status Bar
-                    </DropdownMenuCheckboxItem>
-                    <DropdownMenuCheckboxItem
-                      checked={showActivityBar}
-                      onCheckedChange={setShowActivityBar}
-                      disabled
-                    >
-                      Activity Bar
-                    </DropdownMenuCheckboxItem>
-                    <DropdownMenuCheckboxItem
-                      checked={showPanel}
-                      onCheckedChange={setShowPanel}
-                    >
-                      Panel
-                    </DropdownMenuCheckboxItem>
+
                   </DropdownMenuContent>
                 </DropdownMenu>
                 <div
