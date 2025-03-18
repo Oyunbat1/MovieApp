@@ -16,12 +16,14 @@ function MovieList({ upcomingMovies, topRatedMovies, popularMovies }: Props) {
   return (
     <div>
       {details.titles.map((title, index) => {
-        let movieList : Movie[] = [];
+        let movieList: Movie[] = [];
         if (title === "Upcoming") movieList = upcomingMovies;
         if (title === "TopRated") movieList = topRatedMovies;
         if (title === "Popular") movieList = popularMovies;
 
-        return <MovieListEach key={index} title={title} movieList={movieList} />;
+        return (
+          <MovieListEach key={index} title={title} movieList={movieList} />
+        );
       })}
     </div>
   );

@@ -5,7 +5,7 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useMediaQuery } from "react-responsive";
-import { Search, Moon, ChevronDown,ChevronRight} from "lucide-react";
+import { Search, Moon, ChevronDown, ChevronRight } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { DropdownMenuCheckboxItemProps } from "@radix-ui/react-dropdown-menu";
 
@@ -19,7 +19,16 @@ import {
 } from "@/components/ui/dropdown-menu";
 type Checked = DropdownMenuCheckboxItemProps["checked"];
 
-function Header({ setCurrentPage ,genreMovies }) {
+interface Genre {
+  id: number;
+  name: string;
+}
+interface HeaderProps {
+  setCurrentPage: (page: string) => void;
+  genreMovies: Genre[];
+}
+
+const Header: React.FC<HeaderProps> = ({ setCurrentPage, genreMovies }) => {
   const [search, setSearch] = useState(null);
   const [showStatusBar, setShowStatusBar] = React.useState<Checked>(true);
   const [showActivityBar, setShowActivityBar] = React.useState<Checked>(false);
@@ -72,28 +81,29 @@ function Header({ setCurrentPage ,genreMovies }) {
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent className="w-[500px] xl:ml-[405px] lg:ml-[400px]">
-                  <DropdownMenuLabel className="text-[24px] font-[600]">
-                Genres
-                <p className="text-[16px] font-[400]">
-                  See lists of movies by genre
-                </p>
-              </DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <div className="grid grid-cols-3 xl:grid-cols-5 xl:gap-y-8 gap-3 p-[8px] ">
-                {" "}
-                {genreMovies && genreMovies.map((genres) => (
-                  <div className="" key={genres.id}>
-                    <Button
-                      key={genres.id}
-                      className="bg-white border h-[24px] text-black text-[12px] hover:text-white "
-                    >
-                      {genres.name} <ChevronRight className="text-black" />
-                    </Button>
-                  </div>
-                ))}
-              </div>
+                    <DropdownMenuLabel className="text-[24px] font-[600]">
+                      Genres
+                      <p className="text-[16px] font-[400]">
+                        See lists of movies by genre
+                      </p>
+                    </DropdownMenuLabel>
                     <DropdownMenuSeparator />
-
+                    <div className="grid grid-cols-3 xl:grid-cols-5 xl:gap-y-8 gap-3 p-[8px] ">
+                      {" "}
+                      {genreMovies &&
+                        genreMovies.map((genres: Genre) => (
+                          <div className="" key={genres.id}>
+                            <Button
+                              key={genres.id}
+                              className="bg-white border h-[24px] text-black text-[12px] hover:text-white "
+                            >
+                              {genres.name}{" "}
+                              <ChevronRight className="text-black" />
+                            </Button>
+                          </div>
+                        ))}
+                    </div>
+                    <DropdownMenuSeparator />
                   </DropdownMenuContent>
                 </DropdownMenu>
                 <div
@@ -119,6 +129,6 @@ function Header({ setCurrentPage ,genreMovies }) {
       )}
     </div>
   );
-}
+};
 
 export default Header;

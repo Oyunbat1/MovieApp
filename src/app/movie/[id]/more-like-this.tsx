@@ -8,7 +8,7 @@ import Movie from "@/components/type/Type";
 import Header from "@/components/ui/Header/Header";
 import FirstStep from "@/components/ui/Header/firstStep/First";
 import { Button } from "@/components/ui/button";
-import { ArrowRight} from "lucide-react"
+import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 
@@ -18,17 +18,13 @@ export default function MovieDetailPage() {
 
   const [similar, setSimilar] = useState([]);
 
-
-
   const getMovies = async () => {
     try {
       const [similar] = await Promise.all([
-  
         axios.get(`https://api.themoviedb.org/3/movie/${id}/similar`, {
           headers: { Authorization: `Bearer ${ACCESS_TOKEN}` },
         }),
       ]);
-     
 
       setSimilar(similar.data.results);
     } catch (error) {
@@ -43,14 +39,13 @@ export default function MovieDetailPage() {
 
   return (
     <div className="p-6">
-
       <div className="grid grid-cols-2 gap-4 mt-[20px]">
-      {similar.slice(0,2).map((sim: Movie, index) => (
+        {similar.slice(0, 2).map((sim: Movie, index) => (
           <Link key={index} href={`/movie/${sim.id}`}>
             <div className="w-full flex flex-col gap-2 items-center p-[10px] bg-slate-200 rounded-md cursor-pointer hover:bg-gray-300">
               <div className="rounded-md p-[10px]">
                 <img
-                  src={`https://image.tmdb.org/t/p/w300${sim.poster_path}`}  
+                  src={`https://image.tmdb.org/t/p/w300${sim.poster_path}`}
                   alt={sim.title}
                 />
               </div>

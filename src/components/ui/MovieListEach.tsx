@@ -21,7 +21,7 @@ function MovieListEach({ movieList, title }: Props) {
             <div className="w-full flex flex-col gap-2 items-center p-[10px] bg-slate-200 rounded-md cursor-pointer hover:bg-gray-300">
               <div className="rounded-md p-[10px]">
                 <img
-                  src={`https://image.tmdb.org/t/p/w300${movie.poster_path}`}  
+                  src={`https://image.tmdb.org/t/p/w300${movie.poster_path}`}
                   alt={movie.title}
                 />
               </div>

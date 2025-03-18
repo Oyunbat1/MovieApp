@@ -8,21 +8,24 @@ import Movie from "@/components/type/Type";
 import Header from "@/components/ui/Header/Header";
 import FirstStep from "@/components/ui/Header/firstStep/First";
 import { Button } from "@/components/ui/button";
-import { ArrowRight} from "lucide-react"
+import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
+
+interface Credit {
+  id: number;
+  job: string;
+  name: string;
+}
 
 export default function MovieDetailPage() {
   const { id } = useParams();
   console.log("Movie ID:", id);
 
-
-  const [movie, setMovie] = useState(null);
+  const [movie, setMovie] = useState<Movie | null>(null);
   const [trailer, setTrailer] = useState(null);
-  const [credits, setCredits] = useState([]);
+  const [credits, setCredits] = useState<Credit[]>([]);
   const [similar, setSimilar] = useState([]);
-console.log(credits)
-
 
   const getMovies = async () => {
     try {
@@ -56,7 +59,9 @@ console.log(credits)
 
   return (
     <div className="p-6">
-      <div><Header/></div>
+      <div>
+        <Header setCurrentPage={() => {}} genreMovies={[]} />
+      </div>
       <div className="mt-[80px]">
         <div className="flex justify-around gap-8">
           <div>
@@ -94,48 +99,48 @@ console.log(credits)
         <div className="flex justify-around gap-20 border-b pb-[24px]">
           <h1 className="w-[100px]">Director</h1>
           {credits.map((credit) => {
-  if (credit.job === "Director") {
-    return <p key={credit.id}>{credit.name}</p>; 
-  }
-  return null; 
-})}
-
+            if (credit.job === "Director") {
+              return <p key={credit.id}>{credit.name}</p>;
+            }
+            return null;
+          })}
         </div>
         <div className="flex justify-around gap-20 border-b pb-[24px]">
           <h1 className="w-[100px]">Writers</h1>
           {credits.map((credit) => {
-  if (credit.job === "Writer") {
-    return <p key={credit.id}>{credit.name}</p>; 
-  }
-  return null; 
-})}
+            if (credit.job === "Writer") {
+              return <p key={credit.id}>{credit.name}</p>;
+            }
+            return null;
+          })}
         </div>
         <div className="flex  justify-around gap-20 border-b pb-[24px]">
           <h1 className="w-[100px]">Stars</h1>
           {credits.map((credit) => {
-  if (credit.job === "Writer") {
-    return <p key={credit.id}>{credit.name}</p>; 
-  }
-  return null; 
-})}
+            if (credit.job === "Writer") {
+              return <p key={credit.id}>{credit.name}</p>;
+            }
+            return null;
+          })}
         </div>
       </div>
       <div>
         <div className="flex justify-between items-center mt-[40px] outline-none">
           <h1 className="text-[24px] font-[600]">More like this</h1>
           <Link href={`/movie/${id}/more-like-this.tsx`}>
-  <Button className="bg-white text-black">See more <ArrowRight/></Button>
-</Link>
-
+            <Button className="bg-white text-black">
+              See more <ArrowRight />
+            </Button>
+          </Link>
         </div>
       </div>
       <div className="grid grid-cols-2 gap-4 mt-[20px]">
-      {similar.slice(0,2).map((sim: Movie, index) => (
+        {similar.slice(0, 2).map((sim: Movie, index) => (
           <Link key={index} href={`/movie/${sim.id}`}>
             <div className="w-full flex flex-col gap-2 items-center p-[10px] bg-slate-200 rounded-md cursor-pointer hover:bg-gray-300">
               <div className="rounded-md p-[10px]">
                 <img
-                  src={`https://image.tmdb.org/t/p/w300${sim.poster_path}`}  
+                  src={`https://image.tmdb.org/t/p/w300${sim.poster_path}`}
                   alt={sim.title}
                 />
               </div>
