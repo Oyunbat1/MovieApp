@@ -81,7 +81,7 @@ function Header({ setCurrentPage ,genreMovies }) {
               <DropdownMenuSeparator />
               <div className="grid grid-cols-3 xl:grid-cols-5 xl:gap-y-8 gap-3 p-[8px] ">
                 {" "}
-                {genreMovies.map((genres) => (
+                {genreMovies && genreMovies.map((genres) => (
                   <div className="" key={genres.id}>
                     <Button
                       key={genres.id}
