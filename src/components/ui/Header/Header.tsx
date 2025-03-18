@@ -7,17 +7,14 @@ import { Button } from "@/components/ui/button";
 import { useMediaQuery } from "react-responsive";
 import { Search, Moon, ChevronDown, ChevronRight } from "lucide-react";
 import { Input } from "@/components/ui/input";
-import { DropdownMenuCheckboxItemProps } from "@radix-ui/react-dropdown-menu";
 
 import {
   DropdownMenu,
-  DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-type Checked = DropdownMenuCheckboxItemProps["checked"];
 
 interface Genre {
   id: number;
@@ -30,9 +27,6 @@ interface HeaderProps {
 
 const Header: React.FC<HeaderProps> = ({ setCurrentPage, genreMovies }) => {
   const [search, setSearch] = useState(null);
-  const [showStatusBar, setShowStatusBar] = React.useState<Checked>(true);
-  const [showActivityBar, setShowActivityBar] = React.useState<Checked>(false);
-  const [showPanel, setShowPanel] = React.useState<Checked>(false);
   const isMobileQuery = useMediaQuery({ maxWidth: 639 });
   const [isMobile, setIsMobile] = useState(false);
   useEffect(() => {
@@ -68,7 +62,7 @@ const Header: React.FC<HeaderProps> = ({ setCurrentPage, genreMovies }) => {
         </div>
       )}
       {!isMobile && (
-        <div className="h-[80px] bg-white flex justify-center w-full items-center gap-20 ">
+        <div className="h-[80px] bg-white flex justify-center w-full items-center gap-20 sm:bg-red-300 md:bg-amber-300 lg:bg-green-400 xl:bg-blue-400 ">
           {search === null && (
             <div className="w-full  flex justify-around gap-20 sm:gap-4 xl:gap-40 items-center  ">
               <Image src="/Logo.png" width={120} height={50} alt="Movie Logo" />

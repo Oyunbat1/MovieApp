@@ -16,8 +16,16 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 type Checked = DropdownMenuCheckboxItemProps["checked"];
+interface Genre {
+  id: number;
+  name: string;
+}
+interface FirstProps {
+  setCurrentPage: (page: string) => void;
+  genreMovies: Genre[];
+}
 
-function First({ setCurrentPage, genreMovies }) {
+const First: React.FC<FirstProps> = ({ setCurrentPage, genreMovies }) => {
   const [search, setSearch] = useState(null);
   const [showStatusBar, setShowStatusBar] = React.useState<Checked>(true);
   const [showActivityBar, setShowActivityBar] = React.useState<Checked>(false);
@@ -136,6 +144,6 @@ function First({ setCurrentPage, genreMovies }) {
       )}
     </div>
   );
-}
+};
 
 export default First;
