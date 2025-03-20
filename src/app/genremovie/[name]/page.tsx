@@ -12,7 +12,7 @@ import Movie from "@/components/type/Type";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import {ChevronRight } from "lucide-react";
+import { ChevronRight } from "lucide-react";
 import {
   Pagination,
   PaginationContent,
@@ -23,6 +23,7 @@ import {
 } from "@/components/ui/pagination";
 type Genre = {
   name: string;
+  id: number;
 };
 
 function GenreMoviesPage() {
@@ -30,17 +31,16 @@ function GenreMoviesPage() {
   const [genreMovies, setGenreMovies] = useState<Movie[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [genres, setGenres] = useState<Genre[]>([]);
-    const isMobileQuery = useMediaQuery({ maxWidth: 639 });
-    const [isMobile, setIsMobile] = useState(false);
-    useEffect(() => {
-      setIsMobile(isMobileQuery);
-    }, [isMobileQuery]);
-    const [numItemsToShow, setNumItemsToShow] = useState(4); 
-    const moviesPerPage = numItemsToShow;
-    
-    const isTablet = useMediaQuery({ minWidth: 768, maxWidth: 1023 });
-const IsMobile = useMediaQuery({ maxWidth: 767 });
-    
+  const isMobileQuery = useMediaQuery({ maxWidth: 639 });
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    setIsMobile(isMobileQuery);
+  }, [isMobileQuery]);
+  const [numItemsToShow, setNumItemsToShow] = useState(4);
+  const moviesPerPage = numItemsToShow;
+
+  const isTablet = useMediaQuery({ minWidth: 768, maxWidth: 1023 });
+  const IsMobile = useMediaQuery({ maxWidth: 767 });
 
   const updateItemsToShow = () => {
     if (window.innerWidth >= 1280) {
@@ -65,7 +65,6 @@ const IsMobile = useMediaQuery({ maxWidth: 767 });
   const startIndex = (currentPage - 1) * moviesPerPage;
   const endIndex = startIndex + moviesPerPage;
   const currentMovies = genreMovies.slice(startIndex, endIndex);
-
 
   const genreName = Array.isArray(params.name) ? params.name[0] : params.name;
   const genreId = genreName ? genreMap[genreName] : undefined;
@@ -119,138 +118,142 @@ const IsMobile = useMediaQuery({ maxWidth: 767 });
   return (
     <div>
       <Header setCurrentPage={() => {}} genreMovies={[]} />
-      {isMobile && (<div>
-        <div className="flex flex-col items-center">
-        <div className="pt-[10px] p-[20px] text-center">
-          <h1 className="text-[24px] font-[600]">Genres</h1>
-          <p className="text-[16px] font-[400]">
-            See lists of movies by genre{" "}
-          </p>
+      {isMobile && (
+        <div>
+          <div className="flex flex-col items-center">
+            <div className="pt-[10px] p-[20px] text-center">
+              <h1 className="text-[24px] font-[600]">Genres</h1>
+              <p className="text-[16px] font-[400]">
+                See lists of movies by genre{" "}
+              </p>
 
-          <div className="grid grid-cols-4 gap-4 w-[380px] pt-[40px] text-center">
-            {genres.map((genre) => (
-              <Link href={`${genre.name}`}>
-                <div>
-                  <Button className="bg-gray-100 text-black h-[20px] hover:text-white">
-                    {genre.name}
-                  </Button>
-                </div>
-              </Link>
-            ))}
-          </div>
-        </div>
-        <div className="p-[20px] text-center">
-          <h1 className="pl-[20px]">Movies titles in :"{genreName}"</h1>
-          <div className="grid grid-cols-2 lg:grid-cols-3 sm:grid-cols-1 gap-10 p-4 border-t p-y-[10px]">
-            {genreMovies.length > 0 ? (
-              genreMovies.slice(0, 6).map((movie) => (
-                <div
-                  key={movie.id}
-                  className="w-[165px]  flex flex-col gap-2 items-center p-[10px] bg-slate-200 rounded-md cursor-pointer hover:bg-gray-300"
-                >
-                  <div className="rounded-md p-[10px]">
-                    <img
-                      src={`https://image.tmdb.org/t/p/w300${movie.poster_path}`}
-                      alt={movie.title}
-                    />
-                  </div>
-                  <div className="flex flex-col justify-center items-center">
-                    <div className="flex items-center">
-                      <Image
-                        src="/star.svg"
-                        width={10}
-                        height={50}
-                        alt="Star"
-                      />
-                      <p className="text-[#71717A] text-[12px]">
-                        <span className="font-bold text-[12px] text-black">
-                          {movie.vote_average}
-                        </span>
-                        /10
-                      </p>
+              <div className="grid grid-cols-4 gap-4 w-[380px] pt-[40px] text-center">
+                {genres.map((genre) => (
+                  <Link href={`${genre.name}`}>
+                    <div>
+                      <Button className="bg-gray-100 text-black h-[20px] hover:text-white">
+                        {genre.name}
+                      </Button>
                     </div>
-                    <h1 className="text-[16px]">{movie.title}</h1>
-                  </div>
-                </div>
-              ))
-            ) : (
-              <p>Loading movies...</p>
-            )}
+                  </Link>
+                ))}
+              </div>
+            </div>
+            <div className="p-[20px] text-center">
+              <h1 className="pl-[20px]">Movies titles in :"{genreName}"</h1>
+              <div className="grid grid-cols-2 lg:grid-cols-3 sm:grid-cols-1 gap-10 p-4 border-t p-y-[10px]">
+                {genreMovies.length > 0 ? (
+                  genreMovies.slice(0, 6).map((movie) => (
+                    <div
+                      key={movie.id}
+                      className="w-[165px]  flex flex-col gap-2 items-center p-[10px] bg-slate-200 rounded-md cursor-pointer hover:bg-gray-300"
+                    >
+                      <div className="rounded-md p-[10px]">
+                        <img
+                          src={`https://image.tmdb.org/t/p/w300${movie.poster_path}`}
+                          alt={movie.title}
+                        />
+                      </div>
+                      <div className="flex flex-col justify-center items-center">
+                        <div className="flex items-center">
+                          <Image
+                            src="/star.svg"
+                            width={10}
+                            height={50}
+                            alt="Star"
+                          />
+                          <p className="text-[#71717A] text-[12px]">
+                            <span className="font-bold text-[12px] text-black">
+                              {movie.vote_average}
+                            </span>
+                            /10
+                          </p>
+                        </div>
+                        <h1 className="text-[16px]">{movie.title}</h1>
+                      </div>
+                    </div>
+                  ))
+                ) : (
+                  <p>Loading movies...</p>
+                )}
+              </div>
+            </div>
+          </div>
+          <div className="mt-[18px] mb-[20px] flex justify-center">
+            <Pagination>
+              <PaginationContent>
+                <PaginationItem>
+                  <PaginationPrevious
+                    href="#"
+                    onClick={() =>
+                      setCurrentPage((prev) => Math.max(prev - 1, 1))
+                    }
+                    className={
+                      currentPage === 1 ? "opacity-50 pointer-events-none" : ""
+                    }
+                  />
+                </PaginationItem>
+
+                {[...Array(totalPages)].map((_, index) => (
+                  <PaginationItem key={index}>
+                    <PaginationLink
+                      href="#"
+                      isActive={currentPage === index + 1}
+                      onClick={() => setCurrentPage(index + 1)}
+                    >
+                      {index + 1}
+                    </PaginationLink>
+                  </PaginationItem>
+                ))}
+
+                <PaginationItem>
+                  <PaginationNext
+                    href="#"
+                    onClick={() =>
+                      setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+                    }
+                    className={
+                      currentPage === totalPages
+                        ? "opacity-50 pointer-events-none"
+                        : ""
+                    }
+                  />
+                </PaginationItem>
+              </PaginationContent>
+            </Pagination>
           </div>
         </div>
-      </div>
-      <div className="mt-[18px] mb-[20px] flex justify-center">
-        <Pagination>
-          <PaginationContent>
-            <PaginationItem>
-              <PaginationPrevious
-                href="#"
-                onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-                className={
-                  currentPage === 1 ? "opacity-50 pointer-events-none" : ""
-                }
-              />
-            </PaginationItem>
+      )}
 
-            {[...Array(totalPages)].map((_, index) => (
-              <PaginationItem key={index}>
-                <PaginationLink
-                  href="#"
-                  isActive={currentPage === index + 1}
-                  onClick={() => setCurrentPage(index + 1)}
-                >
-                  {index + 1}
-                </PaginationLink>
-              </PaginationItem>
-            ))}
+      {!isMobile && (
+        <div>
+          <div className="flex justify-around ">
+            <div className="pt-[10px] p-[20px]">
+              <h1 className="text-[24px] font-[600]">Genres</h1>
+              <p className="text-[16px] font-[400]">
+                See lists of movies by genre{" "}
+              </p>
 
-            <PaginationItem>
-              <PaginationNext
-                href="#"
-                onClick={() =>
-                  setCurrentPage((prev) => Math.min(prev + 1, totalPages))
-                }
-                className={
-                  currentPage === totalPages
-                    ? "opacity-50 pointer-events-none"
-                    : ""
-                }
-              />
-            </PaginationItem>
-          </PaginationContent>
-        </Pagination>
-      </div>
-      </div>)}
-
-      {!isMobile &&(
-    <div>
-                <div className="flex justify-around ">
-              <div className="pt-[10px] p-[20px]">
-                <h1 className="text-[24px] font-[600]">Genres</h1>
-                <p className="text-[16px] font-[400]">
-                  See lists of movies by genre{" "}
-                </p>
-      
-                <div className="grid grid-cols-4 md:grid-cols-3 md:w-[280px] sm:w-[280px] sm:grid-cols-3 gap-4 w-[580px] pt-[40px]">
-                  {genres.map((genre) => (
-                    <Link href={`${genre.name}`}>
-                      <div>
-                        <Button className="bg-gray-100 text-black h-[20px] hover:text-white">
-                          {genre.name}
-                          <ChevronRight></ChevronRight>
-                        </Button>
-                      </div>
-                    </Link>
-                  ))}
-                </div>
+              <div className="grid grid-cols-4 md:grid-cols-3 md:w-[280px] sm:w-[280px] sm:grid-cols-3 gap-4 w-[580px] pt-[40px]">
+                {genres.map((genre) => (
+                  <Link key={genre.id} href={`${genre.name}`}>
+                    <div>
+                      <Button className="bg-gray-100 text-black h-[20px] hover:text-white">
+                        {genre.name}
+                        <ChevronRight></ChevronRight>
+                      </Button>
+                    </div>
+                  </Link>
+                ))}
               </div>
-              <div className="p-[20px]">
-                <h1 className="pl-[20px]">Movies titles in :"{genreName}"</h1>
-                <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 sm:grid-cols-1 gap-10 p-4 border-l p-y-[10px]">
-                  {genreMovies.length > 0 ? (
-                    genreMovies.slice(0, moviesToShow).map((movie) => (
-                      <Link key={movie.id} href={`/movie/${movie.id}`}>
-                                  <div
+            </div>
+            <div className="p-[20px]">
+              <h1 className="pl-[20px]">Movies titles in :"{genreName}"</h1>
+              <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 sm:grid-cols-1 gap-10 p-4 border-l p-y-[10px]">
+                {genreMovies.length > 0 ? (
+                  genreMovies.slice(0, moviesToShow).map((movie) => (
+                    <Link key={movie.id} href={`/movie/${movie.id}`}>
+                      <div
                         key={movie.id}
                         className="w-[165px]  flex flex-col gap-2 items-center p-[10px] bg-slate-200 rounded-md cursor-pointer hover:bg-gray-300"
                       >
@@ -278,57 +281,58 @@ const IsMobile = useMediaQuery({ maxWidth: 767 });
                           <h1 className="text-[16px]">{movie.title}</h1>
                         </div>
                       </div>
-                      </Link>
-                    ))
-                  ) : (
-                    <p>Loading movies...</p>
-                  )}
-                </div>
+                    </Link>
+                  ))
+                ) : (
+                  <p>Loading movies...</p>
+                )}
               </div>
             </div>
-            <div className="mt-[18px] mb-[20px] flex justify-center">
-        <Pagination>
-          <PaginationContent>
-            <PaginationItem>
-              <PaginationPrevious
-                href="#"
-                onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-                className={
-                  currentPage === 1 ? "opacity-50 pointer-events-none" : ""
-                }
-              />
-            </PaginationItem>
+          </div>
+          <div className="mt-[18px] mb-[20px] flex justify-center">
+            <Pagination>
+              <PaginationContent>
+                <PaginationItem>
+                  <PaginationPrevious
+                    href="#"
+                    onClick={() =>
+                      setCurrentPage((prev) => Math.max(prev - 1, 1))
+                    }
+                    className={
+                      currentPage === 1 ? "opacity-50 pointer-events-none" : ""
+                    }
+                  />
+                </PaginationItem>
 
-            {[...Array(totalPages)].map((_, index) => (
-              <PaginationItem key={index}>
-                <PaginationLink
-                  href="#"
-                  isActive={currentPage === index + 1}
-                  onClick={() => setCurrentPage(index + 1)}
-                >
-                  {index + 1}
-                </PaginationLink>
-              </PaginationItem>
-            ))}
+                {[...Array(totalPages)].map((_, index) => (
+                  <PaginationItem key={index}>
+                    <PaginationLink
+                      href="#"
+                      isActive={currentPage === index + 1}
+                      onClick={() => setCurrentPage(index + 1)}
+                    >
+                      {index + 1}
+                    </PaginationLink>
+                  </PaginationItem>
+                ))}
 
-            <PaginationItem>
-              <PaginationNext
-                href="#"
-                onClick={() =>
-                  setCurrentPage((prev) => Math.min(prev + 1, totalPages))
-                }
-                className={
-                  currentPage === totalPages
-                    ? "opacity-50 pointer-events-none"
-                    : ""
-                }
-              />
-            </PaginationItem>
-          </PaginationContent>
-        </Pagination>
-      </div>
-
-    </div>
+                <PaginationItem>
+                  <PaginationNext
+                    href="#"
+                    onClick={() =>
+                      setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+                    }
+                    className={
+                      currentPage === totalPages
+                        ? "opacity-50 pointer-events-none"
+                        : ""
+                    }
+                  />
+                </PaginationItem>
+              </PaginationContent>
+            </Pagination>
+          </div>
+        </div>
       )}
 
       <Footer />
