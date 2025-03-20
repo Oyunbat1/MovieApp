@@ -25,7 +25,7 @@ export default function MovieDetailPage() {
   console.log("Movie ID:", id);
   const [similar, setSimilar] = useState<Movie[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [numItemsToShow, setNumItemsToShow] = useState(4); // Set initial items per page
+  const [numItemsToShow, setNumItemsToShow] = useState(4); 
   const moviesPerPage = numItemsToShow;
 
   useEffect(() => {

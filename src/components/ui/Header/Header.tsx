@@ -9,7 +9,7 @@ import { Search, Moon, ChevronDown, ChevronRight } from "lucide-react";
 import { Input } from "@/components/ui/input";
 
 import {
-  DropdownMenu,
+  DropdownMenu,     
   DropdownMenuContent,
   DropdownMenuLabel,
   DropdownMenuSeparator,
@@ -88,7 +88,8 @@ const Header: React.FC<HeaderProps> = ({ setCurrentPage, genreMovies }) => {
                       {genreMovies &&
                         genreMovies.map((genres: Genre) => (
                           <div className="" key={genres.id}>
-                      <Link href={`/genremovie/${genres.name}`}>      <Button
+                      <Link href={`/genremovie/${genres.name}`}>     
+                       <Button
                               key={genres.id}
                               className="bg-white border h-[24px] text-black text-[12px] hover:text-white "
                             >
