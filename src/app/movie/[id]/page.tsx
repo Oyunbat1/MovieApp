@@ -72,9 +72,9 @@ export default function MovieDetailPage() {
 
   useEffect(() => {
     getMovies();
-    updateItemsToShow(); // Initialize number of items to show based on screen size
-    window.addEventListener("resize", updateItemsToShow); // Update on resize
-    return () => window.removeEventListener("resize", updateItemsToShow); // Clean up event listener
+    updateItemsToShow(); 
+    window.addEventListener("resize", updateItemsToShow);
+    return () => window.removeEventListener("resize", updateItemsToShow); 
   }, [id]);
 
   if (!movie) return <p>Loading...</p>;

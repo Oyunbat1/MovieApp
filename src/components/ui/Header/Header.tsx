@@ -15,6 +15,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import Link from "next/link";
 
 interface Genre {
   id: number;
@@ -76,6 +77,7 @@ const Header: React.FC<HeaderProps> = ({ setCurrentPage, genreMovies }) => {
                   </DropdownMenuTrigger>
                   <DropdownMenuContent className="w-[500px] xl:ml-[405px] lg:ml-[400px]">
                     <DropdownMenuLabel className="text-[24px] font-[600]">
+                    
                       Genres
                       <p className="text-[16px] font-[400]">
                         See lists of movies by genre
@@ -83,17 +85,16 @@ const Header: React.FC<HeaderProps> = ({ setCurrentPage, genreMovies }) => {
                     </DropdownMenuLabel>
                     <DropdownMenuSeparator />
                     <div className="grid grid-cols-3 xl:grid-cols-5 xl:gap-y-8 gap-3 p-[8px] ">
-                      {" "}
                       {genreMovies &&
                         genreMovies.map((genres: Genre) => (
                           <div className="" key={genres.id}>
-                            <Button
+                      <Link href={`/genremovie/${genres.name}`}>      <Button
                               key={genres.id}
                               className="bg-white border h-[24px] text-black text-[12px] hover:text-white "
                             >
                               {genres.name}{" "}
                               <ChevronRight className="text-black" />
-                            </Button>
+                            </Button></Link>
                           </div>
                         ))}
                     </div>
