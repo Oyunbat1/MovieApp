@@ -249,7 +249,8 @@ const IsMobile = useMediaQuery({ maxWidth: 767 });
                 <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 sm:grid-cols-1 gap-10 p-4 border-l p-y-[10px]">
                   {genreMovies.length > 0 ? (
                     genreMovies.slice(0, moviesToShow).map((movie) => (
-                      <div
+                      <Link key={movie.id} href={`/movie/${movie.id}`}>
+                                  <div
                         key={movie.id}
                         className="w-[165px]  flex flex-col gap-2 items-center p-[10px] bg-slate-200 rounded-md cursor-pointer hover:bg-gray-300"
                       >
@@ -277,6 +278,7 @@ const IsMobile = useMediaQuery({ maxWidth: 767 });
                           <h1 className="text-[16px]">{movie.title}</h1>
                         </div>
                       </div>
+                      </Link>
                     ))
                   ) : (
                     <p>Loading movies...</p>
