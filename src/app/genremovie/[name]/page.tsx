@@ -35,8 +35,38 @@ function GenreMoviesPage() {
     useEffect(() => {
       setIsMobile(isMobileQuery);
     }, [isMobileQuery]);
-
+    const [numItemsToShow, setNumItemsToShow] = useState(4); 
+    const moviesPerPage = numItemsToShow;
     
+    const isTablet = useMediaQuery({ minWidth: 768, maxWidth: 1023 });
+const IsMobile = useMediaQuery({ maxWidth: 767 });
+    
+
+  const updateItemsToShow = () => {
+    if (window.innerWidth >= 1280) {
+      setNumItemsToShow(10);
+    } else if (window.innerWidth >= 1024) {
+      setNumItemsToShow(8);
+    } else if (window.innerWidth >= 768) {
+      setNumItemsToShow(6);
+    } else {
+      setNumItemsToShow(4);
+    }
+  };
+  useEffect(() => {
+    updateItemsToShow();
+    window.addEventListener("resize", updateItemsToShow);
+    return () => {
+      window.removeEventListener("resize", updateItemsToShow);
+    };
+  }, []);
+
+  const totalPages = Math.ceil(genreMovies.length / moviesPerPage);
+  const startIndex = (currentPage - 1) * moviesPerPage;
+  const endIndex = startIndex + moviesPerPage;
+  const currentMovies = genreMovies.slice(startIndex, endIndex);
+
+
   const genreName = Array.isArray(params.name) ? params.name[0] : params.name;
   const genreId = genreName ? genreMap[genreName] : undefined;
 
@@ -85,10 +115,12 @@ function GenreMoviesPage() {
     }
   }, [genreId, currentPage]);
 
+  const moviesToShow = IsMobile ? 4 : isTablet ? 6 : 9;
   return (
     <div>
       <Header setCurrentPage={() => {}} genreMovies={[]} />
-      {isMobile && (      <div className="flex flex-col items-center">
+      {isMobile && (<div>
+        <div className="flex flex-col items-center">
         <div className="pt-[10px] p-[20px] text-center">
           <h1 className="text-[24px] font-[600]">Genres</h1>
           <p className="text-[16px] font-[400]">
@@ -111,7 +143,7 @@ function GenreMoviesPage() {
           <h1 className="pl-[20px]">Movies titles in :"{genreName}"</h1>
           <div className="grid grid-cols-2 lg:grid-cols-3 sm:grid-cols-1 gap-10 p-4 border-t p-y-[10px]">
             {genreMovies.length > 0 ? (
-              genreMovies.slice(0, 12).map((movie) => (
+              genreMovies.slice(0, 6).map((movie) => (
                 <div
                   key={movie.id}
                   className="w-[165px]  flex flex-col gap-2 items-center p-[10px] bg-slate-200 rounded-md cursor-pointer hover:bg-gray-300"
@@ -146,10 +178,53 @@ function GenreMoviesPage() {
             )}
           </div>
         </div>
+      </div>
+      <div className="mt-[18px] mb-[20px] flex justify-center">
+        <Pagination>
+          <PaginationContent>
+            <PaginationItem>
+              <PaginationPrevious
+                href="#"
+                onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+                className={
+                  currentPage === 1 ? "opacity-50 pointer-events-none" : ""
+                }
+              />
+            </PaginationItem>
+
+            {[...Array(totalPages)].map((_, index) => (
+              <PaginationItem key={index}>
+                <PaginationLink
+                  href="#"
+                  isActive={currentPage === index + 1}
+                  onClick={() => setCurrentPage(index + 1)}
+                >
+                  {index + 1}
+                </PaginationLink>
+              </PaginationItem>
+            ))}
+
+            <PaginationItem>
+              <PaginationNext
+                href="#"
+                onClick={() =>
+                  setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+                }
+                className={
+                  currentPage === totalPages
+                    ? "opacity-50 pointer-events-none"
+                    : ""
+                }
+              />
+            </PaginationItem>
+          </PaginationContent>
+        </Pagination>
+      </div>
       </div>)}
 
       {!isMobile &&(
-              <div className="flex justify-around ">
+    <div>
+                <div className="flex justify-around ">
               <div className="pt-[10px] p-[20px]">
                 <h1 className="text-[24px] font-[600]">Genres</h1>
                 <p className="text-[16px] font-[400]">
@@ -173,7 +248,7 @@ function GenreMoviesPage() {
                 <h1 className="pl-[20px]">Movies titles in :"{genreName}"</h1>
                 <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 sm:grid-cols-1 gap-10 p-4 border-l p-y-[10px]">
                   {genreMovies.length > 0 ? (
-                    genreMovies.slice(0, 9).map((movie) => (
+                    genreMovies.slice(0, moviesToShow).map((movie) => (
                       <div
                         key={movie.id}
                         className="w-[165px]  flex flex-col gap-2 items-center p-[10px] bg-slate-200 rounded-md cursor-pointer hover:bg-gray-300"
@@ -209,6 +284,49 @@ function GenreMoviesPage() {
                 </div>
               </div>
             </div>
+            <div className="mt-[18px] mb-[20px] flex justify-center">
+        <Pagination>
+          <PaginationContent>
+            <PaginationItem>
+              <PaginationPrevious
+                href="#"
+                onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+                className={
+                  currentPage === 1 ? "opacity-50 pointer-events-none" : ""
+                }
+              />
+            </PaginationItem>
+
+            {[...Array(totalPages)].map((_, index) => (
+              <PaginationItem key={index}>
+                <PaginationLink
+                  href="#"
+                  isActive={currentPage === index + 1}
+                  onClick={() => setCurrentPage(index + 1)}
+                >
+                  {index + 1}
+                </PaginationLink>
+              </PaginationItem>
+            ))}
+
+            <PaginationItem>
+              <PaginationNext
+                href="#"
+                onClick={() =>
+                  setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+                }
+                className={
+                  currentPage === totalPages
+                    ? "opacity-50 pointer-events-none"
+                    : ""
+                }
+              />
+            </PaginationItem>
+          </PaginationContent>
+        </Pagination>
+      </div>
+
+    </div>
       )}
 
       <Footer />

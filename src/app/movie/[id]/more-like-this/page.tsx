@@ -7,8 +7,7 @@ import ACCESS_TOKEN from "@/constants/index";
 import Movie from "@/components/type/Type";
 import Header from "@/components/ui/Header/Header";
 import Footer from "@/components/ui/Footer";
-import { Button } from "@/components/ui/button";
-import { ArrowRight } from "lucide-react";
+
 import Link from "next/link";
 import Image from "next/image";
 import {
@@ -107,7 +106,7 @@ export default function MovieDetailPage() {
         ))}
       </div>
 
-      {/* Pagination */}
+    
       <div className="mt-[18px] flex justify-center">
         <Pagination>
           <PaginationContent>
