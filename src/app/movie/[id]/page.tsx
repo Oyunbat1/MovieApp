@@ -72,9 +72,9 @@ export default function MovieDetailPage() {
 
   useEffect(() => {
     getMovies();
-    updateItemsToShow(); 
+    updateItemsToShow();
     window.addEventListener("resize", updateItemsToShow);
-    return () => window.removeEventListener("resize", updateItemsToShow); 
+    return () => window.removeEventListener("resize", updateItemsToShow);
   }, [id]);
 
   if (!movie) return <p>Loading...</p>;
