@@ -7,7 +7,9 @@ import { Button } from "@/components/ui/button";
 import { useMediaQuery } from "react-responsive";
 import { Search, Moon, ChevronDown, ChevronRight } from "lucide-react";
 import { Input } from "@/components/ui/input";
-
+import axios from "axios"
+import ACCESS_TOKEN from "@/constants/index";
+import Movie from "@/components/type/Type";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -25,15 +27,37 @@ interface HeaderProps {
   setCurrentPage: (page: string) => void;
   genreMovies: Genre[];
 }
-
 const Header: React.FC<HeaderProps> = ({ setCurrentPage, genreMovies }) => {
-  const [query, setQuery] = useState("");
+
   const isMobileQuery = useMediaQuery({ maxWidth: 639 });
   const [isMobile, setIsMobile] = useState(false);
+  const [page , setPage] = useState(1)
+  const [searchMovie , setSearchMovies] = useState<Movie[]>([])
+  const [query, setQuery] = useState("");
 
   useEffect(() => {
     setIsMobile(isMobileQuery);
   }, [isMobileQuery]);
+
+  const SearchMoviesByGenre = async (query: string) => {
+    const res = await axios.get(
+      `https://api.themoviedb.org/3/search/movie?query=${query}&language=en&page=${page}`,
+      {
+        headers: {
+          Authorization: `Bearer ${ACCESS_TOKEN}`,
+        },
+      }
+    );
+    setSearchMovies(res.data.results);
+  };
+
+  const HandleSearch = (event: ChangeEvent<HTMLInputElement>) => {
+    setQuery(event.target.value);
+    console.log(event.target.value);
+  };
+  useEffect(() => {
+    SearchMoviesByGenre(query);
+  }, [query]);
 
   return (
     <div>
@@ -62,7 +86,7 @@ const Header: React.FC<HeaderProps> = ({ setCurrentPage, genreMovies }) => {
         </div>
       )}
       {!isMobile && (
-        <div className="h-[80px] bg-white flex justify-center w-full items-center gap-20 sm:bg-red-300 md:bg-amber-300 lg:bg-green-400 xl:bg-blue-400 ">
+        <div className="h-[80px] bg-white flex flex-col justify-center w-full items-center gap-20 sm:bg-red-300 md:bg-amber-300 lg:bg-green-400 xl:bg-blue-400 ">
           <div className="w-full  flex justify-around gap-20 sm:gap-4 xl:gap-40 items-center  ">
             <Image src="/Logo.png" width={120} height={50} alt="Movie Logo" />
             <div className="flex gap-4">
@@ -106,8 +130,8 @@ const Header: React.FC<HeaderProps> = ({ setCurrentPage, genreMovies }) => {
               >
                 <Search className="text-[#E4E4E7]" />
                 <Input
-                  value={query}
-                  onChange={(event) => setQuery(event.target.value)}
+                    value={query}
+                    onChange={HandleSearch}
                   type="text"
                   placeholder="Search..."
                   className="border-none outline-none focus:outline-none "
@@ -120,6 +144,36 @@ const Header: React.FC<HeaderProps> = ({ setCurrentPage, genreMovies }) => {
               </Button>
             </div>
           </div>
+                    <div className="absolute top-[76px] z-32 sm:ml-[70px]">
+                    <div className="rounded-md w-[360px] sm:w-[400px] md:w-[480px] bg-white border">
+                    {searchMovie.slice(0,5).map((search) => (
+                        <div key={search.id} className=" p-[10px] border-b-1">
+                          <div className=" flex justify-around items-center gap-2 h-[140px] p-[10px] relative">
+                          <img
+                          className="w-[100px] h-[130px] rounded-md absolute left-1"
+                            src={`https://image.tmdb.org/t/p/w300${search.poster_path}`}
+                            alt={search.title}
+                          />
+                            <div className="flex flex-col gap-10 absolute right-4 w-[200px] md:w-[300px] ">
+                              <div>
+                                <h1 className="text-[14px] font-[600]">{search.title}</h1>
+                                <div className="flex items-center gap-2">
+                                   <Image src="/star.svg" width={10} height={50} alt="Star" />
+                                 <h1 className="text-[12px]"> <span className="text-[14px] font-bold">{search.vote_average}</span>/10</h1>
+                                </div>
+                              </div>
+                              <div className="flex justify-around gap-20">
+                                <h1>{search.release_date.slice(0,4)}</h1>
+                                <h1>Bottuon</h1>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        
+                      ))}
+                    <div className="p-[20px]"><h1>See all results for ... </h1></div>
+                    </div>
+                    </div>
         </div>
       )}
     </div>

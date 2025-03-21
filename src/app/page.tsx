@@ -16,7 +16,7 @@ export default function Home() {
   const [popularMovies, setPopularMovies] = useState([]);
   const [genreMovies, setGenreMovies] = useState([]);
   const [currentPage, setCurrentPage] = useState("header");
-
+  
   const getMovies = async () => {
     try {
       const [upcoming, topRated, popular, genre] = await Promise.all([
@@ -46,7 +46,7 @@ export default function Home() {
   useEffect(() => {
     getMovies();
   }, []);
-
+  // console.log("test")
   return (
     <>
       {currentPage === "header" && (

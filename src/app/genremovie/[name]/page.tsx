@@ -181,7 +181,7 @@ function GenreMoviesPage() {
           </div>
           <div className="mt-[18px] mb-[20px] flex justify-center">
             <Pagination>
-              <PaginationContent>
+              <PaginationContent> 
                 <PaginationItem>
                   <PaginationPrevious
                     href="#"
