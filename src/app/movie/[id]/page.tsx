@@ -21,7 +21,7 @@ interface Credit {
 export default function MovieDetailPage() {
   const { id } = useParams();
   const [movie, setMovie] = useState<Movie | null>(null);
-  const [trailer, setTrailer] = useState(null);
+  const [trailer, setTrailer] = useState<any>(null);
   const [credits, setCredits] = useState<Credit[]>([]);
   const [similar, setSimilar] = useState<Movie[]>([]);
   const [numItemsToShow, setNumItemsToShow] = useState(2);
@@ -50,11 +50,13 @@ export default function MovieDetailPage() {
         }),
       ]);
       setMovie(movie.data);
-      setTrailer(trailer.data.results);
+      setTrailer(
+        trailer.data.results.length > 0 ? trailer.data.results[0] : null
+      );
       setCredits(credits.data.crew);
       setSimilar(similar.data.results);
     } catch (error) {
-      console.log("Алдаа гарлааа");
+      console.log("Error fetching movie data");
     }
   };
 
@@ -90,7 +92,7 @@ export default function MovieDetailPage() {
                 <h1 className="text-3xl font-bold">{movie.title}</h1>
                 <p className="text-1xl font-bold">{movie.release_date}</p>
               </div>
-              <div className="flex ">
+              <div className="flex">
                 <p>⭐</p>
                 <div className="flex flex-col">
                   <p>{movie.vote_average}/10</p>
@@ -98,7 +100,21 @@ export default function MovieDetailPage() {
                 </div>
               </div>
             </div>
-            <div>trailer</div>
+            <div>
+              {trailer && (
+                <div className="mt-4">
+                  <iframe
+                    width="100%"
+                    height="315"
+                    src={`https://www.youtube.com/embed/${trailer.key}`}
+                    title="Movie Trailer"
+                    frameBorder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                  ></iframe>
+                </div>
+              )}
+            </div>
             <div className="flex gap-4">
               <img
                 src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
@@ -119,6 +135,7 @@ export default function MovieDetailPage() {
             </div>
           </div>
         )}
+
         {!isMobile && (
           <div className="mt-[20px]">
             <div className="flex justify-between gap-18">
@@ -126,7 +143,7 @@ export default function MovieDetailPage() {
                 <h1 className="text-3xl font-bold">{movie.title}</h1>
                 <p className="text-1xl font-bold">{movie.release_date}</p>
               </div>
-              <div className="flex ">
+              <div className="flex">
                 <p>⭐</p>
                 <div className="flex flex-col">
                   <p>{movie.vote_average}/10</p>
@@ -141,7 +158,21 @@ export default function MovieDetailPage() {
                 alt={movie.title}
                 className="mt-4 w-[100px] h-[148px] sm:w-[140px] sm:h-[200px] md:w-[180px] md:h-[240px] lg:w-[220px] lg:h-[260px] xl:w-[300px] xl:h-[360px]"
               />
-              <div>trailer</div>
+              <div className="mb-[20px]">
+                {trailer && (
+                  <div className="xl:w-[900px] lg:w-[700px] md:w-[500px] ">
+                    <iframe
+                      width="100%"
+                      height="315"
+                      src={`https://www.youtube.com/embed/${trailer.key}`}
+                      title="Movie Trailer"
+                      frameBorder="0"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                    ></iframe>
+                  </div>
+                )}
+              </div>
             </div>
             <div>
               {movie.genres.map((genre) => (
@@ -186,6 +217,7 @@ export default function MovieDetailPage() {
             })}
           </div>
         </div>
+
         <div>
           <div className="flex justify-between items-center mt-[40px] outline-none">
             <h1 className="text-[24px] font-[600]">More like this</h1>
@@ -210,22 +242,19 @@ export default function MovieDetailPage() {
                   <div className="flex items-center">
                     <Image src="/star.svg" width={10} height={50} alt="Star" />
                     <p className="text-[#71717A] text-[12px]">
-                      <span className="font-bold text-[12px] text-black">
-                        {sim.vote_average}
-                      </span>
-                      /10
+                      <span className="font-bold">{sim.vote_average}/10</span>
                     </p>
                   </div>
-                  <h1 className="text-[16px]">{sim.title}</h1>
+                  <div className="flex justify-center items-center text-center w-full text-[14px] font-bold text-ellipsis">
+                    {sim.title}
+                  </div>
                 </div>
               </div>
             </Link>
           ))}
         </div>
       </div>
-      <div className="mt-[30px]">
-        <Footer />
-      </div>
+      <Footer />
     </div>
   );
 }
