@@ -23,7 +23,7 @@ function MovieListEach({ movieList, title }: Props) {
         path = "/popular";
         break;
     }
-    console.log(`Navigating to: ${path}`); // Debug log to check the path
+    console.log(`Navigating to: ${path}`);
     return path;
   };
 
