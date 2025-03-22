@@ -1,19 +1,11 @@
 "use client";
 
-import React, { ChangeEvent } from "react";
-import { useEffect, useState } from "react";
+import React, { ChangeEvent, useEffect, useState } from "react";
 import { useTheme } from "next-themes"; // Import theme hook
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { useMediaQuery } from "react-responsive";
-import {
-  Search,
-  Moon,
-  Sun,
-  ChevronDown,
-  ChevronRight,
-  ArrowRight,
-} from "lucide-react";
+import { Search, Moon, Sun, ChevronDown, ChevronRight } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import axios from "axios";
 import ACCESS_TOKEN from "@/constants/index";
@@ -31,10 +23,12 @@ interface Genre {
   id: number;
   name: string;
 }
+
 interface HeaderProps {
   setCurrentPage: (page: string) => void;
   genreMovies: Genre[];
 }
+
 const Header: React.FC<HeaderProps> = ({ setCurrentPage, genreMovies }) => {
   const isMobileQuery = useMediaQuery({ maxWidth: 639 });
   const [isMobile, setIsMobile] = useState(false);
@@ -42,11 +36,15 @@ const Header: React.FC<HeaderProps> = ({ setCurrentPage, genreMovies }) => {
   const [searchMovie, setSearchMovies] = useState<Movie[]>([]);
   const [query, setQuery] = useState("");
   const { theme, setTheme } = useTheme(); // Use theme hook
+  const [isMounted, setIsMounted] = useState(false); // State to track if the component has mounted
 
+  // Ensure the component is only mounted on the client side
   useEffect(() => {
+    setIsMounted(true); // Set to true after component is mounted
     setIsMobile(isMobileQuery);
   }, [isMobileQuery]);
 
+  // Fetch movies by genre or search query
   const SearchMoviesByGenre = async (query: string) => {
     const res = await axios.get(
       `https://api.themoviedb.org/3/search/movie?query=${query}&language=en&page=${page}`,
@@ -59,12 +57,22 @@ const Header: React.FC<HeaderProps> = ({ setCurrentPage, genreMovies }) => {
     setSearchMovies(res.data.results);
   };
 
+  // Handle search input changes
   const HandleSearch = (event: ChangeEvent<HTMLInputElement>) => {
     setQuery(event.target.value);
   };
+
+  // Search movies whenever query changes
   useEffect(() => {
-    SearchMoviesByGenre(query);
+    if (query) {
+      SearchMoviesByGenre(query);
+    }
   }, [query]);
+
+  // Prevent rendering before the component is mounted to avoid hydration error
+  if (!isMounted) {
+    return null;
+  }
 
   return (
     <div className="bg-white dark:bg-black text-black dark:text-white">
