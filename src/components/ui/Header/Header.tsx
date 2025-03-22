@@ -5,7 +5,14 @@ import { useTheme } from "next-themes"; // Import theme hook
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { useMediaQuery } from "react-responsive";
-import { Search, Moon, Sun, ChevronDown, ChevronRight } from "lucide-react";
+import {
+  Search,
+  Moon,
+  Sun,
+  ChevronDown,
+  ChevronRight,
+  ArrowRight,
+} from "lucide-react";
 import { Input } from "@/components/ui/input";
 import axios from "axios";
 import ACCESS_TOKEN from "@/constants/index";
@@ -161,6 +168,72 @@ const Header: React.FC<HeaderProps> = ({ setCurrentPage, genreMovies }) => {
               </Button>
             </div>
           </div>
+          {/* Search Suggestions Dropdown */}
+          {/* Search Suggestions Dropdown */}
+          {query && (
+            <div className="absolute top-[76px] z-32 sm:ml-[70px]">
+              <div className="rounded-md w-[360px] sm:w-[400px] md:w-[480px] bg-white dark:bg-gray-800 border dark:border-gray-700">
+                {searchMovie.slice(0, 5).map((search) => (
+                  <div
+                    key={search.id}
+                    className="p-[10px] border-b-1 dark:border-gray-700"
+                  >
+                    <Link key={search.id} href={`/movie/${search.id}`}>
+                      <div className="flex justify-around items-center gap-2 h-[140px] p-[10px] relative hover:bg-gray-300 hover:rounded-md transition duration-200 ease-in-out dark:hover:bg-gray-600">
+                        <img
+                          className="w-[100px] h-[130px] rounded-md absolute left-1"
+                          src={`https://image.tmdb.org/t/p/w300${search.poster_path}`}
+                          alt={search.title}
+                        />
+                        <div className="flex flex-col gap-10 absolute right-4 w-[200px] md:w-[300px]">
+                          <div>
+                            <h1 className="text-[14px] font-[600] text-black dark:text-white">
+                              {search.title}
+                            </h1>
+                            <div className="flex items-center gap-2">
+                              <Image
+                                src="/star.svg"
+                                width={10}
+                                height={50}
+                                alt="Star"
+                              />
+                              <h1 className="text-[12px]">
+                                {" "}
+                                <span className="text-[14px] font-bold">
+                                  {search.vote_average}
+                                </span>
+                                /10
+                              </h1>
+                            </div>
+                          </div>
+                          <div className="flex justify-around gap-20">
+                            <h1 className="text-black dark:text-white">
+                              {search.release_date.slice(0, 4)}
+                            </h1>
+                            <Link
+                              href={`/searchDetail/${search.original_title}`}
+                              passHref
+                            >
+                              <Button className="bg-white dark:bg-gray-700 text-black dark:text-white hover:bg-gray-100 dark:hover:bg-gray-600">
+                                See more <ArrowRight />
+                              </Button>
+                            </Link>
+                          </div>
+                        </div>
+                      </div>
+                    </Link>
+                  </div>
+                ))}
+                {searchMovie.length > 0 && (
+                  <div className="p-[20px]">
+                    <h1 className="text-black dark:text-white">
+                      See all results for {query}{" "}
+                    </h1>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
         </div>
       )}
     </div>
