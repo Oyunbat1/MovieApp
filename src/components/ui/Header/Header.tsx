@@ -1,13 +1,15 @@
 "use client";
-import React from "react";
-import Image from "next/image";
 
+import React, { ChangeEvent } from "react";
 import { useEffect, useState } from "react";
+import { useTheme } from "next-themes"; // Import theme hook
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { useMediaQuery } from "react-responsive";
 import {
   Search,
   Moon,
+  Sun,
   ChevronDown,
   ChevronRight,
   ArrowRight,
@@ -39,6 +41,7 @@ const Header: React.FC<HeaderProps> = ({ setCurrentPage, genreMovies }) => {
   const [page, setPage] = useState(1);
   const [searchMovie, setSearchMovies] = useState<Movie[]>([]);
   const [query, setQuery] = useState("");
+  const { theme, setTheme } = useTheme(); // Use theme hook
 
   useEffect(() => {
     setIsMobile(isMobileQuery);
@@ -58,17 +61,16 @@ const Header: React.FC<HeaderProps> = ({ setCurrentPage, genreMovies }) => {
 
   const HandleSearch = (event: ChangeEvent<HTMLInputElement>) => {
     setQuery(event.target.value);
-    console.log(event.target.value);
   };
   useEffect(() => {
     SearchMoviesByGenre(query);
   }, [query]);
 
   return (
-    <div>
+    <div className="bg-white dark:bg-black text-black dark:text-white">
       {isMobile && (
-        <div className="h-[60px] bg-white flex justify-center w-full items-center gap-20 ">
-          <div className="w-full  flex justify-around gap-20 items-center   ">
+        <div className="h-[60px] flex justify-center w-full items-center gap-20 bg-white dark:bg-gray-900">
+          <div className="w-full flex justify-around items-center">
             <Image
               src="/Logo.png"
               width={120}
@@ -79,30 +81,36 @@ const Header: React.FC<HeaderProps> = ({ setCurrentPage, genreMovies }) => {
             <div className="flex gap-4 mt-[10px]">
               <Button
                 onClick={() => setCurrentPage("first")}
-                className="w-[35px] text-[10px] bg-white text-black hover:text-white "
+                className="w-[35px] text-[10px] bg-white text-black dark:bg-gray-800 dark:text-white hover:text-white "
               >
                 <Search />
               </Button>
-              <Button className="w-[35px] text-[10px] bg-white text-black  hover:text-white">
-                <Moon />
+              <Button
+                onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+                className="w-[35px] text-[10px] bg-white text-black dark:bg-gray-800 dark:text-white hover:text-white"
+              >
+                {theme === "dark" ? <Sun /> : <Moon />}
               </Button>
             </div>
           </div>
         </div>
       )}
       {!isMobile && (
-        <div className="h-[80px] bg-white flex flex-col justify-center w-full items-center gap-20 sm:bg-red-300 md:bg-amber-300 lg:bg-green-400 xl:bg-blue-400 ">
-          <div className="w-full  flex justify-around gap-20 sm:gap-4 xl:gap-40 items-center  ">
+        <div className="h-[80px] flex flex-col justify-center w-full items-center bg-white dark:bg-black">
+          <div className="w-full flex justify-around items-center">
             <Image src="/Logo.png" width={120} height={50} alt="Movie Logo" />
             <div className="flex gap-4">
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="outline" className="w-[97px]">
+                  <Button
+                    variant="outline"
+                    className="w-[97px] dark:text-white dark:border-gray-700"
+                  >
                     <ChevronDown />
                     Genre
                   </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent className="w-[500px] xl:ml-[405px] lg:ml-[400px]">
+                <DropdownMenuContent className="w-[500px] dark:bg-gray-900 dark:text-white">
                   <DropdownMenuLabel className="text-[24px] font-[600]">
                     Genres
                     <p className="text-[16px] font-[400]">
@@ -110,96 +118,39 @@ const Header: React.FC<HeaderProps> = ({ setCurrentPage, genreMovies }) => {
                     </p>
                   </DropdownMenuLabel>
                   <DropdownMenuSeparator />
-                  <div className="grid grid-cols-3 xl:grid-cols-5 xl:gap-y-8 gap-3 p-[8px] ">
-                    {genreMovies &&
-                      genreMovies.map((genres: Genre) => (
-                        <div className="" key={genres.id}>
-                          <Link href={`/genremovie/${genres.name}`}>
-                            <Button
-                              key={genres.id}
-                              className="bg-white border h-[24px] text-black text-[12px] hover:text-white "
-                            >
-                              {genres.name}{" "}
-                              <ChevronRight className="text-black" />
-                            </Button>
-                          </Link>
-                        </div>
-                      ))}
+                  <div className="grid grid-cols-3 xl:grid-cols-5 xl:gap-y-8 gap-3 p-[8px]">
+                    {genreMovies.map((genres: Genre) => (
+                      <div key={genres.id}>
+                        <Link href={`/genremovie/${genres.name}`}>
+                          <Button className="bg-white border h-[24px] text-black dark:bg-gray-800 dark:text-white text-[12px] hover:text-white">
+                            {genres.name}
+                            <ChevronRight />
+                          </Button>
+                        </Link>
+                      </div>
+                    ))}
                   </div>
                   <DropdownMenuSeparator />
                 </DropdownMenuContent>
               </DropdownMenu>
-              <div
-                className="flex bg-white md:w-[379px]  px-4 rounded-md
-               items-center border  border-solid shadow-[0px_1px_2px_0px_rgba(0,0,0,0.05)]"
-              >
-                <Search className="text-[#E4E4E7]" />
+              <div className="flex bg-white dark:bg-gray-800 px-4 rounded-md items-center border border-solid dark:border-gray-700 shadow">
+                <Search className="text-[#E4E4E7] dark:text-gray-400" />
                 <Input
                   value={query}
                   onChange={HandleSearch}
                   type="text"
                   placeholder="Search..."
-                  className="border-none outline-none focus:outline-none "
+                  className="border-none outline-none bg-transparent text-black dark:text-white"
                 />
               </div>
             </div>
             <div className="flex gap-4">
-              <Button className="w-[35px] text-[10px] bg-white text-black  hover:text-white">
-                <Moon />
+              <Button
+                onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+                className="w-[35px] text-[10px] bg-white text-black dark:bg-gray-800 dark:text-white hover:text-white"
+              >
+                {theme === "dark" ? <Sun /> : <Moon />}
               </Button>
-            </div>
-          </div>
-          <div className="absolute top-[76px] z-32 sm:ml-[70px]">
-            <div className="rounded-md w-[360px] sm:w-[400px] md:w-[480px] bg-white border ">
-              {searchMovie.slice(0, 5).map((search) => (
-                <div key={search.id} className=" p-[10px] border-b-1 ">
-                  <Link key={search.id} href={`/movie/${search.id}`}>
-                    <div className=" flex justify-around items-center gap-2 h-[140px] p-[10px] relative hover:bg-gray-300 hover:rounded-md transition duration-200 ease-in-out">
-                      <img
-                        className="w-[100px] h-[130px] rounded-md absolute left-1"
-                        src={`https://image.tmdb.org/t/p/w300${search.poster_path}`}
-                        alt={search.title}
-                      />
-                      <div className="flex flex-col gap-10 absolute right-4 w-[200px] md:w-[300px] ">
-                        <div>
-                          <h1 className="text-[14px] font-[600]">
-                            {search.title}
-                          </h1>
-                          <div className="flex items-center gap-2">
-                            <Image
-                              src="/star.svg"
-                              width={10}
-                              height={50}
-                              alt="Star"
-                            />
-                            <h1 className="text-[12px]">
-                              {" "}
-                              <span className="text-[14px] font-bold">
-                                {search.vote_average}
-                              </span>
-                              /10
-                            </h1>
-                          </div>
-                        </div>
-                        <div className="flex justify-around gap-20">
-                          <h1>{search.release_date.slice(0, 4)}</h1>
-                          <Link
-                            href={`/searchDetail/${search.original_title}`}
-                            passHref
-                          >
-                            <Button className="bg-white text-black hover:bg-gray-100">
-                              See more <ArrowRight />
-                            </Button>
-                          </Link>
-                        </div>
-                      </div>
-                    </div>
-                  </Link>
-                </div>
-              ))}
-              <div className="p-[20px]">
-                <h1>See all results for ... </h1>
-              </div>
             </div>
           </div>
         </div>
